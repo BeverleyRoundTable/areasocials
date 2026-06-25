@@ -384,6 +384,24 @@
     <p class="help" id="help" hidden></p>
   </div>
 
+  <!-- SECRET RULES MODAL -->
+    <dialog id="secretRulesModal" style="border: none; border-radius: var(--radius); padding: 30px 26px; width: 90%; max-width: 400px; background: var(--paper); color: var(--ink); box-shadow: 0 24px 60px rgba(0,0,0,.5); margin: auto;">
+      <h2 style="margin: 0 0 16px; font-size: 22px; color: var(--stamp); font-weight: 700; letter-spacing: -0.01em;">The Beverley Bounty</h2>
+      
+      <div style="font-size: 14px; line-height: 1.5; margin-bottom: 20px;">
+        <p style="margin: 0 0 12px;"><strong>1. The Bank:</strong> Beverley RT holds all the stickers. To get on the board, you must challenge a host.</p>
+        <ul style="margin: 0 0 12px; padding-left: 20px;">
+          <li style="margin-bottom: 6px;"><strong>Bronze (1 pt):</strong> Valiant effort (lose to a host).</li>
+          <li style="margin-bottom: 6px;"><strong>Silver (2 pts):</strong> Giant killer (beat a host).</li>
+          <li style="margin-bottom: 6px;"><strong>Gold (3 pts):</strong> The Humiliator (win by 5+ points).</li>
+        </ul>
+        <p style="margin: 0 0 12px;"><strong>2. The "Pink Slip" Wager:</strong> Guest vs. Guest matches don't generate new points. You must agree to wager your existing stickers (e.g., Bronze for Bronze). The winner physically peels it off the loser.</p>
+        <p style="margin: 0;"><strong>3. King of the Court:</strong> Winner stays on, but capped at 3 consecutive wins to keep the tables moving. First to 11 points.</p>
+      </div>
+
+      <button id="closeRulesBtn" class="btn btn--navy">Got it</button>
+    </dialog>
+  
 <script>
 /* ======================================================================
    EDIT THESE FIVE LINES, then push to GitHub Pages.
@@ -697,6 +715,47 @@ function showClosed(reason){
     }
   }).catch(() => {});
 })();
+
+  // ---------- SECRET RULES EASTER EGG ----------
+(function setupSecretRules(){
+  const dot = document.querySelector('.eyebrow .dot');
+  const modal = document.getElementById('secretRulesModal');
+  const closeBtn = document.getElementById('closeRulesBtn');
+
+  if (dot && modal && closeBtn) {
+    // Make the red dot look clickable on hover
+    dot.style.cursor = 'pointer';
+    dot.title = "View the secret rules";
+    
+    // Open modal when the dot is clicked
+    dot.addEventListener('click', () => {
+      modal.showModal();
+      // Optional: blur the background ticket slightly for effect
+      document.querySelector('.ticket').style.filter = 'blur(2px)';
+    });
+
+    // Close modal
+    closeBtn.addEventListener('click', () => {
+      modal.close();
+      document.querySelector('.ticket').style.filter = 'none';
+    });
+    
+    // Close modal if clicking outside the box
+    modal.addEventListener('click', (e) => {
+      const dialogDimensions = modal.getBoundingClientRect();
+      if (
+        e.clientX < dialogDimensions.left ||
+        e.clientX > dialogDimensions.right ||
+        e.clientY < dialogDimensions.top ||
+        e.clientY > dialogDimensions.bottom
+      ) {
+        modal.close();
+        document.querySelector('.ticket').style.filter = 'none';
+      }
+    });
+  }
+})();
+  
 </script>
 </body>
 </html>
